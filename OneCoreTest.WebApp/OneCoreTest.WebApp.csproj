@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OneCoreTest.Data\OneCoreTest.Data.csproj" />
+    <ProjectReference Include="..\OneCoreTest.Service\OneCoreTest.Service.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

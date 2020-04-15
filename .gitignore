@@ -6,3 +6,5 @@
 /OneCoreTest.Domain/obj
 /OneCoreTest.Data/obj
 /OneCoreTest.Data/bin/Debug/netcoreapp3.1
+/OneCoreTest.Service/obj
+/OneCoreTest.Service/bin/Debug/netcoreapp3.1
