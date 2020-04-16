@@ -44,7 +44,6 @@ namespace OneCoreTest.Service
         public IEnumerable<User> GetUsers()
         {
             return _context.Users
-                .Where(w => w.Status)
                 .OrderBy(c => c.Name)
                 .ToList();
         }
