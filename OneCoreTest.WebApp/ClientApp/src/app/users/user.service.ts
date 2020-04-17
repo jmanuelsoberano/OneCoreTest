@@ -19,7 +19,6 @@ export class UserService {
       .pipe(
         map((m: []) =>
           m.map((user: any) => {
-            console.log(user);
             return {
               id: user.id,
               usuario: user.name,

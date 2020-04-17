@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -14,6 +14,8 @@ import { UsersComponent } from './users/users.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { HttpInterceptorModule } from './services/http-request.interceptor';
+import { AuthGuard } from './services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -29,17 +31,16 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
       { path: '', redirectTo: 'users-list', pathMatch: 'full' },
-      { path: 'users-list', component: UsersComponent },
-      { path: 'home', component: HomeComponent },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'users-list', component: UsersComponent, canActivate: [AuthGuard] },
     ]),
     NoopAnimationsModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    HttpInterceptorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
