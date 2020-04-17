@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OneCoreTest.Domain;
 using OneCoreTest.Service;
 using System;
@@ -10,6 +11,7 @@ namespace OneCoreTest.WebApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IOneCoreTestRepository _oneCoreTestRepository;

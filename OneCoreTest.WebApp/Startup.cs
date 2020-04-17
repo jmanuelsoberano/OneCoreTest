@@ -6,8 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using OneCoreTest.Data;
+using OneCoreTest.Domain;
 using OneCoreTest.Service;
+using System;
+using System.Text;
 
 namespace OneCoreTest.WebApp
 {
@@ -23,7 +27,42 @@ namespace OneCoreTest.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            JwtSettings settings = GetJwtSettings();
+
+            services.AddSingleton<JwtSettings>(settings);
+
+            services
+                .AddAuthentication
+                (
+                    options =>
+                    {
+                        options.DefaultAuthenticateScheme = "JwtBearer";
+                        options.DefaultChallengeScheme = "JwtBearer";
+                    }
+                )
+                .AddJwtBearer
+                (
+                    "JwtBearer", jwtBearerOptions =>
+                    {
+                        jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Key)),
+
+                            ValidateIssuer = true,
+                            ValidIssuer = settings.Issuer,
+
+                            ValidateAudience = true,
+                            ValidAudience = settings.Audience,
+
+                            ValidateLifetime = true,
+                            ClockSkew = TimeSpan.FromMinutes(settings.MinutesToExpiration)
+                        };
+                    }
+                );
+
             services.AddScoped<IOneCoreTestRepository, OneCoreTestRepository>();
+            services.AddScoped<ISecurityManager, SecurityManager>();
 
             services.AddDbContext<OneCoreTestDbContext>(option =>
             {
@@ -61,6 +100,9 @@ namespace OneCoreTest.WebApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -81,5 +123,18 @@ namespace OneCoreTest.WebApp
                 }
             });
         }
+
+        public JwtSettings GetJwtSettings()
+        {
+            JwtSettings settings = new JwtSettings();
+
+            settings.Key = Configuration["JwtSettings:key"];
+            settings.Audience = Configuration["JwtSettings:audience"];
+            settings.Issuer = Configuration["JwtSettings:issuer"];
+            settings.MinutesToExpiration = Convert.ToInt32(Configuration["JwtSettings:minutesToExpiration"]);
+
+            return settings;
+        }
+
     }
 }
