@@ -17,30 +17,30 @@ export class UsersComponent implements OnInit {
   constructor(
     private service: UserService
   ) {
+    this.getUser();
+  }
+
+  ngOnInit() {    
+  }
+
+  getUser() {
     this.service.getUsers().subscribe(next => {
       this.dataSource = new MatTableDataSource<User>(next);
       this.dataSource.paginator = this.paginator;
     });
   }
 
-  ngOnInit() {    
+  delete(id: any) {
+    if (confirm('Delete this user?')) {
+      this.service.deleteUser(id).subscribe(
+        () => this.getUser()
+      )
+    }
+  }
+
+  edith(id: any) {
+    console.log(id);
   }
 
 }
 
-const ELEMENT_DATA: User[] = [
-  { id: '1', usuario: 'Hydrogen', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '2', usuario: 'Helium', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '3', usuario: 'Hydrogen', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '4', usuario: 'Helium', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '5', usuario: 'Hydrogen', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '6', usuario: 'Helium', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '7', usuario: 'Hydrogen', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '8', usuario: 'Helium', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '9', usuario: 'Hydrogen', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '10', usuario: 'Helium', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '11', usuario: 'Hydrogen', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '12', usuario: 'Helium', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '13', usuario: 'Hydrogen', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' },
-  { id: '14', usuario: 'Helium', correo: 'asdasd@asdasd.com', sexo: 'Masculino', estatus: 'Activo' }
-];
