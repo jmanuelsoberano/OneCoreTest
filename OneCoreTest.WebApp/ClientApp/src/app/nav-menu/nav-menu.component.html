@@ -29,7 +29,7 @@
               *ngIf="service.isAuthenticated()"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/user']">Add user</a>
+            <a class="nav-link text-dark" [routerLink]="['/user-new/0']">Add user</a>
           </li>
           <li *ngIf="service.isAuthenticated()"
               class="nav-item">

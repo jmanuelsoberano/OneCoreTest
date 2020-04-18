@@ -1,39 +1,56 @@
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+<div class="table-responsive mat-elevation-z8">
+
+  <mat-table [dataSource]="dataSource" [class.isMobile]="true">
 
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Id </th>
-      <td mat-cell *matCellDef="let element">
-        <button
-                type="button" class="btn btn-link" (click)="delete(element.id)">Eliminar</button>
-        <button type="button" class="btn btn-link" (click)="edith(element.id)">Editar</button>
+      <mat-header-cell *matHeaderCellDef style="text-align: center;"> Id </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Id:</span>
         {{element.id}}
-      </td>
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="usuario">
-      <th mat-header-cell *matHeaderCellDef> Usuario </th>
-      <td mat-cell *matCellDef="let element"> {{element.usuario}} </td>
+      <mat-header-cell *matHeaderCellDef> Usuario </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Usuario:</span>{{element.usuario}}
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="correo">
-      <th mat-header-cell *matHeaderCellDef> Correo </th>
-      <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
+      <mat-header-cell *matHeaderCellDef> Correo </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Correo:</span>{{element.correo}}
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="sexo">
-      <th mat-header-cell *matHeaderCellDef> Sexo </th>
-      <td mat-cell *matCellDef="let element"> {{element.sexo}} </td>
+      <mat-header-cell *matHeaderCellDef> Sexo </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Sexo:</span>{{element.sexo}}
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="estatus">
-      <th mat-header-cell *matHeaderCellDef> Estatus </th>
-      <td mat-cell *matCellDef="let element"> {{element.estatus}} </td>
+      <mat-header-cell *matHeaderCellDef> Estatus </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Estatus:</span>{{element.estatus}}
+      </mat-cell>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+    <ng-container matColumnDef="acciones">
+      <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="mobile-label">Estatus:</span>
+        <a type="button" class="btn btn-link acciones" (click)="delete(element.id)">Delete</a>
+        <br/>
+        <a type="button" class="btn btn-link acciones" routerLink="/user/{{element.id}}">Edith</a>
+      </mat-cell>
+    </ng-container>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
 </div>

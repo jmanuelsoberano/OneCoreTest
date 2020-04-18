@@ -1,1 +1,73 @@
-<p>user works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="creationDate">Id: {{ form.get('id').value }}</label>
+  </div>
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email"
+           class="form-control"
+           [ngClass]="{'is-invalid': (form.get('email').touched || form.get('email').dirty) && !form.get('email').valid }"
+           formControlName="email"
+           aria-describedby="emailHelp"
+           placeholder="Enter email">
+  </div>
+  <div class="form-group">
+    <label for="name">Username</label>
+    <input type="text"
+           class="form-control"
+           [ngClass]="{'is-invalid': (form.get('name').touched || form.get('name').dirty) && !form.get('name').valid }"
+           formControlName="name"
+           aria-describedby="nameHelp"
+           placeholder="Enter username">
+    <small id="passwordHelp" class="form-text text-muted">Campo alfanumérico. Longitud mínima 7 caracteres.</small>
+  </div>
+  <div formGroupName="passwordGroup">
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password"
+             class="form-control"
+             [ngClass]="{'is-invalid': form.get('passwordGroup').errors ||
+                                             ((form.get('passwordGroup.password').touched ||
+                                              form.get('passwordGroup.password').dirty) &&
+                                              !form.get('passwordGroup.password').valid) }"
+             formControlName="password"
+             placeholder="Password">
+      <small id="passwordHelp" class="form-text text-muted">Campo alfanumérico que contenga al menos mayúscula, minúscula, símbolo, numero, la longitud deberá ser de amenos 10 caracteres.</small>
+    </div>
+    <div class="form-group">
+      <label for="passwordRepeat">Password repeat</label>
+      <input type="password"
+             class="form-control"
+             [ngClass]="{'is-invalid': form.get('passwordGroup').errors ||
+                                             ((form.get('passwordGroup.passwordRepeat').touched ||
+                                              form.get('passwordGroup.passwordRepeat').dirty) &&
+                                              !form.get('passwordGroup.passwordRepeat').valid) }"
+             formControlName="passwordRepeat"
+             placeholder="Password again">
+      <small id="passwordHelp" class="form-text text-muted">Repetir contraseña.</small>
+    </div>
+  </div>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" formControlName="status">
+    <label class="form-check-label" for="status">Activo</label>
+  </div>
+  <div class="form-group">
+    <label for="gender">Sex</label>
+    <select class="form-control"
+            [ngClass]="{'is-invalid': (form.get('gender').touched || form.get('gender').dirty) && !form.get('gender').valid }"
+            formControlName="gender"
+            placeholder="Select sex">
+      <option>Masculino</option>
+      <option>Femenino</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="creationDate">Creation date: {{ form.get('creationDate').value | date:'fullDate' }}</label>
+  </div>
+  <button type="submit"
+          [disabled]="!form.valid"
+          [title]="form.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+          class="btn btn-primary">Guardar</button>
+  &nbsp;
+  <button type="reset" class="btn btn-primary">Limpiar</button>
+</form>

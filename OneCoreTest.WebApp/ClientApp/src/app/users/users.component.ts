@@ -10,7 +10,7 @@ import { UserService } from './user.service';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'usuario', 'correo', 'sexo', 'estatus'];
+  displayedColumns: string[] = ['id', 'usuario', 'correo', 'sexo', 'estatus', 'acciones'];
   dataSource: any;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 

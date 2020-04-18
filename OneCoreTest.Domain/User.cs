@@ -14,5 +14,6 @@ namespace OneCoreTest.Domain
         public string Password { get; set; }
         public bool Status { get; set; }
         public string Gender { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }

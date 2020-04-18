@@ -4,4 +4,6 @@ export interface User {
   correo: string;
   sexo: string;
   estatus: string;
+  password: string;
+  creationDate: Date;
 }

@@ -4,17 +4,23 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HTTP_INTERCEPTORS
+  HTTP_INTERCEPTORS,  HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { SecurityService } from '../security.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor(
+    private securityService: SecurityService,
+    private router: Router
+  ) { }
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    var token = localStorage.getItem('bearerToken');
+    const token = localStorage.getItem('bearerToken');
 
     if (token) {
       const newReq = req.clone(
@@ -22,11 +28,25 @@ export class HttpRequestInterceptor implements HttpInterceptor {
           headers: req.headers.set('Authorization', 'Bearer ' + token)
         }
       )
-      return next.handle(newReq);
+      return next.handle(newReq).pipe(
+        catchError((err: any) => {
+          if (err instanceof HttpErrorResponse) {
+            try {
+              if (err.status === 401) {
+                this.securityService.logout();
+                this.router.navigate(['/login']);
+              }
+            } catch (e) {
+              //catch
+            }
+          }
+          return of(err);
+        }));
     } else {
       return next.handle(req);
     }
   }
+
 }
 
 @NgModule({
