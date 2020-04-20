@@ -30,15 +30,23 @@ export class UserComponent implements OnInit {
 
   form = this.fb.group({
     id: [null],
-    email: ['', [Validators.required, Validators.email]],
-    name: ['', [Validators.required, Validators.minLength(7)]],
+    email: ['', [
+      Validators.required,
+      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{1,}$')
+    ]],
+    name: ['', [
+      Validators.required,
+      Validators.pattern('^[a-z0-9]{7,}$')
+    ]],
     passwordGroup: this.fb.group({
       password: ['', [
         Validators.required,
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z0-9$@$!%*?&]{10,}$')
       ]],
-      passwordRepeat: ['',
+      passwordRepeat: ['', [
         Validators.required,
-      ],
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z0-9$@$!%*?&]{10,}$')
+      ]],
     }, { validators: passwordMatcher } ),
     status: [true, Validators.required],
     gender: [null, Validators.required],
