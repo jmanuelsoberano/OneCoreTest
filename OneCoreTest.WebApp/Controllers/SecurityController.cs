@@ -25,7 +25,6 @@ namespace OneCoreTest.WebApp.Controllers
         {
             IActionResult ret = null;
             UserAuth auth = new UserAuth();
-            //SecurityManager mgr = new SecurityManager(_settings);
 
             auth = _securityManager.ValidateUser(user);
             if (auth.IsAuthenticated)

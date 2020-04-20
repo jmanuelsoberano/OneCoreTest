@@ -72,5 +72,14 @@ namespace OneCoreTest.Service
             }
         }
 
+        public bool ExistingUser(User user)
+        {
+            var userFound = _context.Users
+                .Where(c => c.Name == user.Name || c.Email == user.Email)
+                .FirstOrDefault();
+
+            return userFound != null;
+        }
+
     }
 }

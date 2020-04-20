@@ -25,6 +25,8 @@ function passwordMatcher(c: AbstractControl): { [key: string]: boolean } | null 
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
+  isNew = true;
+  errorMessage = undefined;
 
   form = this.fb.group({
     id: [null],
@@ -38,7 +40,7 @@ export class UserComponent implements OnInit {
         Validators.required,
       ],
     }, { validators: passwordMatcher } ),
-    status: [false, Validators.required],
+    status: [true, Validators.required],
     gender: [null, Validators.required],
     creationDate: [null],
   });
@@ -52,7 +54,9 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     const key = this.route.snapshot.params.id;
-    if (key !== 0) {
+    this.isNew = key === undefined;
+    if (!this.isNew) {
+      this.form.get('status').disable();
       this.service.getUser(key)
         .pipe(
           map((m: any) => ({
@@ -73,14 +77,29 @@ export class UserComponent implements OnInit {
   }
 
   onSubmit() {
+    this.errorMessage = undefined;
     const user = {
+      id: this.form.get('id').value,
       email: this.form.get('email').value,
       name: this.form.get('name').value,
       password: this.form.get('passwordGroup').get('password').value,
       status: this.form.get('status').value,
       gender: this.form.get('gender').value
     }
-    this.service.newUser(user).subscribe(() => this.router.navigateByUrl('/users-list'));
+    if (this.isNew) {
+      this.service.newUser(user)
+        .subscribe(
+          next => this.router.navigateByUrl('/users-list'),
+          error => this.errorMessage = error
+        );
+    } else {
+      this.service.updateUser(user)
+        .subscribe(
+          next => this.router.navigateByUrl('/users-list'),
+          error => this.errorMessage = error
+        );
+    }
   }
+
 
 }

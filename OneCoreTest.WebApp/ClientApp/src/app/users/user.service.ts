@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from './user.model';
 import { tap, catchError, map, switchMap } from 'rxjs/operators'
 import { throwError } from 'rxjs';
+import { SecurityService } from '../security.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ import { throwError } from 'rxjs';
 export class UserService {
 
   constructor(
+    private securityService: SecurityService,
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string
   ) {
@@ -34,7 +36,18 @@ export class UserService {
   }
 
   getUser(id: string) {
-    return this.http.get(`${this.baseUrl}users/${id}`);
+    return this.http.get(`${this.baseUrl}users/${id}`)
+      .pipe(
+        map((m:any) => ({
+          id: m.id,
+          email: m.email,
+          name: m.name,
+          password: this.securityService.decrypt(m.password),
+          status: m.status,
+          gender: m.gender,
+          creationDate: m.creationDate,
+          }))
+      );
   }
 
   deleteUser(id: string) {
@@ -42,7 +55,19 @@ export class UserService {
   }
 
   newUser(user: any) {
-    return this.http.post(`${this.baseUrl}users`, user);
+    user.password = this.securityService.encrypt(user.password);
+    return this.http.post(`${this.baseUrl}users`, user)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  updateUser(user: any) {
+    user.password = this.securityService.encrypt(user.password);
+    return this.http.put(`${this.baseUrl}users/${user.id}`, user)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   handleError(err: any) {

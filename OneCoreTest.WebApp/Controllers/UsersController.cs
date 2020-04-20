@@ -45,6 +45,11 @@ namespace OneCoreTest.WebApp.Controllers
         [HttpPost]
         public ActionResult<User> CreateUser(User user)
         {
+            if (_oneCoreTestRepository.ExistingUser(user))
+            {
+                return BadRequest("Usuario/Correo duplicado");
+            }
+
             _oneCoreTestRepository.AddUser(user);
             _oneCoreTestRepository.Save();
 

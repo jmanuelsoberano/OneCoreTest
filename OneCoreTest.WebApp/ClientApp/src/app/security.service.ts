@@ -4,6 +4,7 @@ import { UserAuth } from './models/user-auth';
 import { User } from './users/user.model';
 import { tap, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import * as CryptoJS from 'crypto-js';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,6 +16,8 @@ const httpOptions = {
 export class SecurityService {
 
   securityObject: UserAuth = new UserAuth();
+  tokenFromUI: string = "0123456789123456";
+  encrypted: any = "";
 
   constructor(
     private http: HttpClient,
@@ -35,6 +38,7 @@ export class SecurityService {
 
     this.resetSecutityObject();
 
+    user.password = this.encrypt(user.password);
     return this.http.post(`${this.baseUrl}security/login`, user, httpOptions)
       .pipe(
         tap((resp: UserAuth) => {
@@ -48,6 +52,32 @@ export class SecurityService {
   logout() {
     this.resetSecutityObject();
     localStorage.removeItem('bearerToken');
+  }
+
+  encrypt(password: string): string {
+    let _key = CryptoJS.enc.Utf8.parse(this.tokenFromUI);
+    let _iv = CryptoJS.enc.Utf8.parse(this.tokenFromUI);
+    let encrypted = CryptoJS.AES.encrypt(
+      password, _key, {
+      keySize: 16,
+      iv: _iv,
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+    });
+    return encrypted.toString();
+  }
+
+  decrypt(password: string): string {
+    let _key = CryptoJS.enc.Utf8.parse(this.tokenFromUI);
+    let _iv = CryptoJS.enc.Utf8.parse(this.tokenFromUI);
+
+    return CryptoJS.AES.decrypt(
+      password, _key, {
+      keySize: 16,
+      iv: _iv,
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7
+    }).toString(CryptoJS.enc.Utf8);
   }
 
   handleError(err: any) {

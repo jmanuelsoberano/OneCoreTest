@@ -4,9 +4,10 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HTTP_INTERCEPTORS,  HttpErrorResponse,
+  HTTP_INTERCEPTORS,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SecurityService } from '../security.service';
 import { Router } from '@angular/router';
@@ -40,7 +41,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
               //catch
             }
           }
-          return of(err);
+          return throwError(err);
         }));
     } else {
       return next.handle(req);

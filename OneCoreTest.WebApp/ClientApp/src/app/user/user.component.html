@@ -67,7 +67,13 @@
   <button type="submit"
           [disabled]="!form.valid"
           [title]="form.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
-          class="btn btn-primary">Guardar</button>
+          class="btn btn-primary">
+    Guardar
+  </button>
   &nbsp;
-  <button type="reset" class="btn btn-primary">Limpiar</button>
+  <a type="button" class="btn btn-link acciones" routerLink="/users-list">Cancelar</a>
 </form>
+<br />
+<div class="alert alert-warning" role="alert" *ngIf="errorMessage">
+  {{ errorMessage }}
+</div>

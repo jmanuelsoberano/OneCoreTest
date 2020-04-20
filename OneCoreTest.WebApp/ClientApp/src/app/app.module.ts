@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { UsersComponent } from './users/users.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,7 +19,6 @@ import { UserComponent } from './user/user.component';
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
     LoginComponent,
     UsersComponent,
     UserComponent
