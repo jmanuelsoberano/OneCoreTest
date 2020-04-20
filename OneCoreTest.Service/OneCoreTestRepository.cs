@@ -81,5 +81,16 @@ namespace OneCoreTest.Service
             return userFound != null;
         }
 
+        public bool ExistingUserForUpdate(User user)
+        {
+            var userFound = _context.Users
+                .Where(c => 
+                    (c.Name == user.Name || c.Email == user.Email) && 
+                    c.Id != user.Id)
+                .FirstOrDefault();
+
+            return userFound != null;
+        }
+
     }
 }

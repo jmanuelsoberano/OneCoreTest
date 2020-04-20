@@ -60,6 +60,11 @@ namespace OneCoreTest.WebApp.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateCourseForAuthor(Guid id, User user)
         {
+            if (_oneCoreTestRepository.ExistingUserForUpdate(user))
+            {
+                return BadRequest("Usuario/Correo duplicado");
+            }
+
             var userFromRepo = _oneCoreTestRepository.GetUser(id);
 
             if (userFromRepo == null)

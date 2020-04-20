@@ -13,5 +13,6 @@ namespace OneCoreTest.Service
         void DeleteUser(User user);
         bool Save();
         bool ExistingUser(User user);
+        bool ExistingUserForUpdate(User user);
     }
 }

@@ -87,7 +87,6 @@ export class UserComponent implements OnInit {
   onSubmit() {
     this.errorMessage = undefined;
     const user = {
-      id: this.form.get('id').value,
       email: this.form.get('email').value,
       name: this.form.get('name').value,
       password: this.form.get('passwordGroup').get('password').value,
@@ -101,7 +100,8 @@ export class UserComponent implements OnInit {
           error => this.errorMessage = error
         );
     } else {
-      this.service.updateUser(user)
+      let userClone = Object.assign(user, { id: this.form.get('id').value})
+      this.service.updateUser(userClone)
         .subscribe(
           next => this.router.navigateByUrl('/users-list'),
           error => this.errorMessage = error
