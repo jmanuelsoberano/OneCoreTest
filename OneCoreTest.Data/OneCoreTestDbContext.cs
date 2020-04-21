@@ -12,5 +12,13 @@ namespace OneCoreTest.Data
         }
 
         public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<User>()
+                .Property(e => e.CreationDate)
+                .HasDefaultValueSql("getdate()");
+        }
     }
 }

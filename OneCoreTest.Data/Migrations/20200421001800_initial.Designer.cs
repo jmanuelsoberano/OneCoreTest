@@ -10,7 +10,7 @@ using OneCoreTest.Data;
 namespace OneCoreTest.Data.Migrations
 {
     [DbContext(typeof(OneCoreTestDbContext))]
-    [Migration("20200415163444_initial")]
+    [Migration("20200421001800_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,11 @@ namespace OneCoreTest.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
